@@ -14,8 +14,7 @@ function divide(a, b){
     return a / b;
 }
 
-let a = 0;
-let b = 0;
+let storedVal = 0;
 let operator = null;
 
 const Operations = {
@@ -25,22 +24,18 @@ const Operations = {
     Divide:     "divide"
 }
 
-function operate(a, b, operator){
-    switch(operator){
+function operate(a, b, op){
+    switch(op){
         case Operations.Add:
-            add(a, b);
-            break;
+            return add(a, b);
         case Operations.Subtract:
-            subtract(a, b);
-            break;
+            return subtract(a, b);
         case Operations.Multiply:
-            multiply(a, b);
-            break;
+            return multiply(a, b);
         case Operations.Divide:
-            divide(a, b);
-            break;
+            return divide(a, b);
         default:
-            console.log("Invalid Operand!");
+            console.log("Invalid Operator!");
     }
 }
 
@@ -80,3 +75,57 @@ button6.addEventListener('click', () => updateDisplay('6'));
 button7.addEventListener('click', () => updateDisplay('7'));
 button8.addEventListener('click', () => updateDisplay('8'));
 button9.addEventListener('click', () => updateDisplay('9'));
+
+function storeDisplayValue(){
+    if(displayValue){
+        storedVal = displayValue;
+        displayValue = null;
+    }
+}
+
+const buttonAdd = document.querySelector('.buttonAdd');
+const buttonSubtract = document.querySelector('.buttonSubtract');
+const buttonMultiply = document.querySelector('.buttonMultiply');
+const buttonDivide = document.querySelector('.buttonDivide');
+const buttonEquals = document.querySelector('.buttonEquals');
+const buttonClear = document.querySelector('.buttonClear');
+
+buttonAdd.addEventListener('click', () => {
+    operator = Operations.Add;
+    storeDisplayValue();
+});
+buttonSubtract.addEventListener('click', () => {
+    operator = Operations.Subtract;
+    storeDisplayValue();
+});
+buttonMultiply.addEventListener('click', () => {
+    operator = Operations.Multiply;
+    storeDisplayValue();
+});
+buttonDivide.addEventListener('click', () => {
+    operator = Operations.Divide;
+    storeDisplayValue();
+});
+
+let currentVal = null;
+buttonEquals.addEventListener('click', () => {
+    if(displayValue){
+        currentVal = displayValue;
+    }
+    else{
+        currentVal = 0;
+    }
+    
+    let calculatedVal = operate(Number.parseInt(storedVal), parseInt(currentVal), operator);
+    displayValue = null;
+    updateDisplay(calculatedVal);
+    displayValue = null;
+
+    storedVal = calculatedVal;
+});
+
+buttonClear.addEventListener('click', () => {
+    storedVal = 0;
+    displayValue = null;
+    updateDisplay(0);
+});
