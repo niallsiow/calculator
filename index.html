@@ -4,6 +4,44 @@
     <title>Calculator</title>
     <meta charset="UTF-8">
     <script src="./script.js" defer></script>
+
+    <style>
+      *{
+        background-color: rgb(40, 40, 40);
+        color: white;
+      }
+
+      .row{
+        display: flex;
+      }
+
+      .button{
+        font-size: 30px;
+        background-color:rgb(70, 70, 70);
+        height: 100px;
+        width: 100px;
+      }
+
+      .buttonClear{
+        width: 200px;
+        background-color: rgb(87, 87, 255);
+      }
+
+      .buttonDelete{
+        width: 200px;
+        background-color: rgb(255, 71, 71);
+      }
+
+      .buttonEquals{
+        background-color: rgb(108, 214, 108);
+      }
+
+      .display{
+        width: 400px;
+        font-size: 50px;
+        text-align: center;
+      }
+    </style>
   </head>
 
   <body>
@@ -12,26 +50,40 @@
       0
     </div>
 
-    <div class="numbers">
-      <button class="button1">1</button>
-      <button class="button2">2</button>
-      <button class="button3">3</button>
-      <button class="button4">4</button>
-      <button class="button5">5</button>
-      <button class="button6">6</button>
-      <button class="button7">7</button>
-      <button class="button8">8</button>
-      <button class="button9">9</button>
-      <button class="button0">0</button>
-    </div>
+    <div class="buttons">
+      <div class="row">
+        <button class="button buttonClear">C</button>
+        <button class="button buttonDelete">Del</button>
+      </div>
+      <div class="row">
+        <button class="button button7">7</button>
+        <button class="button button8">8</button>
+        <button class="button button9">9</button>
+        <button class="button buttonDivide">/</button>
+      </div>
+      <div class="row">
+        <button class="button button4">4</button>
+        <button class="button button5">5</button>
+        <button class="button button6">6</button>
+        <button class="button buttonMultiply">*</button>
+      </div>
+      <div class="row">
+        <button class="button button1">1</button>
+        <button class="button button2">2</button>
+        <button class="button button3">3</button>
+        <button class="button buttonSubtract">-</button>
+      </div>
+      <div class="row">
+        <button class="button buttonDecimal">.</button>
+        <button class="button button0">0</button>
+        <button class="button buttonEquals">=</button>
+        <button class="button buttonAdd">+</button>
+      </div>
+      <div class="row">
+      </div>
 
-    <div class="operators">
-      <button class="buttonAdd">+</button>
-      <button class="buttonSubtract">-</button>
-      <button class="buttonMultiply">*</button>
-      <button class="buttonDivide">/</button>
-      <button class="buttonEquals">=</button>
-      <button class="buttonClear">C</button>
+      <div>
+      </div>
     </div>
 
   </body>
