@@ -63,7 +63,7 @@ const button5 = document.querySelector('.button5');
 const button6 = document.querySelector('.button6');
 const button7 = document.querySelector('.button7');
 const button8 = document.querySelector('.button8');
-const button9 = document.querySelector('.button8');
+const button9 = document.querySelector('.button9');
 
 button0.addEventListener('click', () => updateDisplay('0'));
 button1.addEventListener('click', () => updateDisplay('1'));
