@@ -1,3 +1,10 @@
+const Operations = {
+    Add:        "add",
+    Subtract:   "subtract",
+    Multiply:   "multiply",
+    Divide:     "divide"
+}
+
 function add(a, b){
     return a + b;
 }
@@ -12,16 +19,6 @@ function multiply(a, b){
 
 function divide(a, b){
     return a / b;
-}
-
-let storedVal = 0;
-let operator = null;
-
-const Operations = {
-    Add:        "add",
-    Subtract:   "subtract",
-    Multiply:   "multiply",
-    Divide:     "divide"
 }
 
 function operate(a, b, op){
@@ -39,19 +36,85 @@ function operate(a, b, op){
     }
 }
 
-let displayValue = null;
+let val1 = null;
+let val2 = null;
+
+let calculatedVal = null;
+
+let operator = null;
+let displayValue = 0;
 
 const display = document.querySelector('.display');
 
-function updateDisplay(input){
+function updateDisplayValue(input){
+    if(calculatedVal){
+        calculatedVal = null;
+    }
+
     if(!displayValue){
+        if(input === '0'){
+            return;
+        }
+
         displayValue = input;
     }
     else{
         displayValue += input;
     }
 
-    display.textContent = displayValue;
+    updateDisplay();
+}
+
+function updateDisplay(){
+    let displayOperator = '';
+    switch(operator){
+        case Operations.Add:
+            displayOperator = '+';
+            break;
+        case Operations.Subtract:
+            displayOperator = '-';
+            break;
+        case Operations.Multiply:
+            displayOperator = '*';
+            break;
+        case Operations.Divide:
+            displayOperator = '/';
+            break;
+        default:
+            displayOperator = '';
+    }
+
+    if(calculatedVal){
+        display.textContent = calculatedVal;
+    }
+    else if(val1 === null){
+        display.textContent = displayValue;
+    }
+    else if(!displayValue){
+        display.textContent = val1 + ' ' + displayOperator;
+    }
+    else{
+        display.textContent = val1 + ' ' + displayOperator + ' ' + displayValue;
+    }
+}
+
+function selectOperator(inputOperator){
+    operator = inputOperator;
+
+    if(calculatedVal){
+        val1 = calculatedVal;
+        calculatedVal = null;
+    }
+    else if(displayValue){
+        val1 = displayValue;
+    }
+    else{
+        val1 = 0;
+    }
+
+    displayValue = 0;
+
+    updateDisplay();
 }
 
 const button0 = document.querySelector('.button0');
@@ -65,23 +128,16 @@ const button7 = document.querySelector('.button7');
 const button8 = document.querySelector('.button8');
 const button9 = document.querySelector('.button9');
 
-button0.addEventListener('click', () => updateDisplay('0'));
-button1.addEventListener('click', () => updateDisplay('1'));
-button2.addEventListener('click', () => updateDisplay('2'));
-button3.addEventListener('click', () => updateDisplay('3'));
-button4.addEventListener('click', () => updateDisplay('4'));
-button5.addEventListener('click', () => updateDisplay('5'));
-button6.addEventListener('click', () => updateDisplay('6'));
-button7.addEventListener('click', () => updateDisplay('7'));
-button8.addEventListener('click', () => updateDisplay('8'));
-button9.addEventListener('click', () => updateDisplay('9'));
-
-function storeDisplayValue(){
-    if(displayValue){
-        storedVal = displayValue;
-        displayValue = null;
-    }
-}
+button0.addEventListener('click', () => updateDisplayValue('0'));
+button1.addEventListener('click', () => updateDisplayValue('1'));
+button2.addEventListener('click', () => updateDisplayValue('2'));
+button3.addEventListener('click', () => updateDisplayValue('3'));
+button4.addEventListener('click', () => updateDisplayValue('4'));
+button5.addEventListener('click', () => updateDisplayValue('5'));
+button6.addEventListener('click', () => updateDisplayValue('6'));
+button7.addEventListener('click', () => updateDisplayValue('7'));
+button8.addEventListener('click', () => updateDisplayValue('8'));
+button9.addEventListener('click', () => updateDisplayValue('9'));
 
 const buttonAdd = document.querySelector('.buttonAdd');
 const buttonSubtract = document.querySelector('.buttonSubtract');
@@ -90,42 +146,34 @@ const buttonDivide = document.querySelector('.buttonDivide');
 const buttonEquals = document.querySelector('.buttonEquals');
 const buttonClear = document.querySelector('.buttonClear');
 
-buttonAdd.addEventListener('click', () => {
-    operator = Operations.Add;
-    storeDisplayValue();
-});
-buttonSubtract.addEventListener('click', () => {
-    operator = Operations.Subtract;
-    storeDisplayValue();
-});
-buttonMultiply.addEventListener('click', () => {
-    operator = Operations.Multiply;
-    storeDisplayValue();
-});
-buttonDivide.addEventListener('click', () => {
-    operator = Operations.Divide;
-    storeDisplayValue();
-});
-
-let currentVal = null;
-buttonEquals.addEventListener('click', () => {
-    if(displayValue){
-        currentVal = displayValue;
-    }
-    else{
-        currentVal = 0;
-    }
-    
-    let calculatedVal = operate(Number.parseInt(storedVal), parseInt(currentVal), operator);
-    displayValue = null;
-    updateDisplay(calculatedVal);
-    displayValue = null;
-
-    storedVal = calculatedVal;
-});
+buttonAdd.addEventListener('click', () => selectOperator(Operations.Add) );
+buttonSubtract.addEventListener('click', () => selectOperator(Operations.Subtract) );
+buttonMultiply.addEventListener('click', () => selectOperator(Operations.Multiply) );
+buttonDivide.addEventListener('click', () => selectOperator(Operations.Divide) );
 
 buttonClear.addEventListener('click', () => {
-    storedVal = 0;
-    displayValue = null;
-    updateDisplay(0);
+    val1 = null;
+    val2 = null;
+    calculatedVal = null;
+    displayValue = 0;
+    operator = null;
+    updateDisplay();
+});
+
+buttonEquals.addEventListener('click', () => {
+    if(displayValue){
+        val2 = displayValue;
+        displayValue = null;
+    }
+    else{
+        val2 = 0;
+    }
+    
+    calculatedVal = operate(Number.parseInt(val1), parseInt(val2), operator);
+
+    val1 = null;
+    val2 = null;
+    displayValue = 0;
+    operator = null;
+    updateDisplay();
 });
