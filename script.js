@@ -42,21 +42,21 @@ let val2 = null;
 let calculatedVal = null;
 
 let operator = null;
-let displayValue = 0;
+let displayValue = null;
 
 const display = document.querySelector('.display');
 
 function updateDisplayValue(input){
-    if(calculatedVal){
+    // if new input recieved, wipe calculated value
+    if(calculatedVal != null){
         calculatedVal = null;
     }
 
-    if(!displayValue){
-        if(input === '0'){
-            return;
-        }
-
+    if(displayValue === null){
         displayValue = input;
+    }
+    else if(displayValue === '0' && input === '0'){
+        return;
     }
     else{
         displayValue += input;
@@ -84,13 +84,18 @@ function updateDisplay(){
             displayOperator = '';
     }
 
-    if(calculatedVal){
+    if(calculatedVal != null){
         display.textContent = calculatedVal;
     }
     else if(val1 === null){
-        display.textContent = displayValue;
+        if(displayValue === null){
+            display.textContent = '0';
+        }
+        else{
+            display.textContent = displayValue;
+        }
     }
-    else if(!displayValue){
+    else if(displayValue === null){
         display.textContent = val1 + ' ' + displayOperator;
     }
     else{
@@ -99,20 +104,39 @@ function updateDisplay(){
 }
 
 function selectOperator(inputOperator){
+    
+    // if val1, operator and valid display value, perform calculation then display calculated number with new operator
+    if(operator && val1 != null && displayValue != null){
+        val2 = displayValue;
+        
+        calculatedVal = operate(Number.parseInt(val1), parseInt(val2), operator);
+    
+        val1 = calculatedVal;
+        calculatedVal = null;
+        val2 = null;
+        displayValue = null;
+        operator = inputOperator;
+        updateDisplay();
+
+        return;
+    }
+
     operator = inputOperator;
 
-    if(calculatedVal){
+    if(calculatedVal != null){
         val1 = calculatedVal;
         calculatedVal = null;
     }
-    else if(displayValue){
+    else if(val1 != null){
+        // don't update any values
+    }
+    else if(displayValue != null){
         val1 = displayValue;
+        displayValue = null;
     }
     else{
         val1 = 0;
     }
-
-    displayValue = 0;
 
     updateDisplay();
 }
@@ -155,7 +179,7 @@ buttonClear.addEventListener('click', () => {
     val1 = null;
     val2 = null;
     calculatedVal = null;
-    displayValue = 0;
+    displayValue = null;
     operator = null;
     updateDisplay();
 });
@@ -173,7 +197,7 @@ buttonEquals.addEventListener('click', () => {
 
     val1 = null;
     val2 = null;
-    displayValue = 0;
+    displayValue = null;
     operator = null;
     updateDisplay();
 });
